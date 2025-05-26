@@ -1,5 +1,7 @@
 import datetime
 
+# https://build.fhir.org/medicationdispense0302.json.html
+
 # Patientenstammdaten einmalig erfassen
 def erfasse_stammdaten():
     print("\nBitte geben Sie die Patientenstammdaten ein:")
@@ -7,7 +9,7 @@ def erfasse_stammdaten():
     vorname = input("Vorname: ")
     geburtsdatum = input("Geburtsdatum (TT.MM.JJJJ): ")
     geschlecht = input("Geschlecht (weiblich/männlich/divers): ")
-    adresse = input("Adresse: ")
+    adresse = input("Adresse: ")    
     insulinart = input("Insulinart: ")
     alter = berechne_alter(geburtsdatum)
     return {"name": name, "vorname": vorname, "alter": alter, "geschlecht": geschlecht, "adresse": adresse,
