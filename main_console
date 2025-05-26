@@ -1,0 +1,38 @@
+# project/main_console.py
+from utils import berechne_alter, berechne_insulinmenge
+from fhir_client import lese_patient_von_server
+
+def erfasse_stammdaten():
+    print("Bitte geben Sie die Patienteninformationen ein:")
+    name = input("Name: ")
+    geburtsdatum = input("Geburtsdatum (YYYY-MM-DD): ")
+    return {"name": name, "geburtsdatum": geburtsdatum}
+
+def erfasse_blutzuckerwerte():
+    while True:
+        try:
+            blutzucker = int(input("Blutzuckerwert (mg/dL): "))
+            broteinheiten = float(input("Broteinheiten: "))
+            return blutzucker, broteinheiten
+        except ValueError:
+            print("Ungültige Eingabe. Bitte erneut versuchen.")
+
+def main():
+    print("--- Patientenverwaltung (Konsole) ---")
+    stammdaten = erfasse_stammdaten()
+    blutzucker, broteinheiten = erfasse_blutzuckerwerte()
+
+    alter = berechne_alter(stammdaten['geburtsdatum'])
+    insulin, bemerkung = berechne_insulinmenge(blutzucker, broteinheiten)
+
+    print(f"\nPatient: {stammdaten['name']}, Alter: {alter} Jahre")
+    print(f"Empfohlene Insulinmenge: {insulin} Einheiten")
+    print(f"Hinweis: {bemerkung}")
+
+    print("\n--- Daten vom FHIR-Server laden ---")
+    patient = lese_patient_von_server("593210")
+    if patient:
+        print(f"FHIR-Patient: {patient['name']} ({patient['birthDate']})")
+
+if __name__ == "__main__":
+    main()
